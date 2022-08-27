@@ -10,4 +10,8 @@ class MsYankiCustomerBackendApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	public void main() {
+		MsYankiCustomerBackendApplication.main(new String[] {});
+	}
 }
