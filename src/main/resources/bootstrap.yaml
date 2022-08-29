@@ -1,4 +1,9 @@
 spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/bd_yanki
+  application:
+    name: ms-yanki-customer-backend
+
+  cloud:
+    config:
+      username: root
+      password: l$14V12GOKEf
+      uri: http://host.docker.internal:8094
