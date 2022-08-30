@@ -41,7 +41,7 @@ public class CustomerRestControllerTest {
         when(customerService.findAll()).thenReturn(Mono.just(responseHandler));
 
         webClient
-                .get().uri("/api/customer")
+                .get().uri("/api/yanki/customer")
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -62,7 +62,7 @@ public class CustomerRestControllerTest {
                 .when(customerService.find("62edbc767ba3a05551fb10d6"))
                 .thenReturn(Mono.just(responseHandler));
 
-        webClient.get().uri("/api/customer/{id}", "62edbc767ba3a05551fb10d6")
+        webClient.get().uri("/api/yanki/customer/{id}", "62edbc767ba3a05551fb10d6")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(ResponseHandler.class);
@@ -85,7 +85,7 @@ public class CustomerRestControllerTest {
 
         webClient
                 .post()
-                .uri("/api/customer")
+                .uri("/api/yanki/customer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(customer))
                 .exchange()
@@ -108,7 +108,7 @@ public class CustomerRestControllerTest {
 
         webClient
                 .put()
-                .uri("/api/customer/{id}", "62edbc767ba3a05551fb10d6")
+                .uri("/api/yanki/customer/{id}", "62edbc767ba3a05551fb10d6")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(customer))
                 .exchange()
@@ -127,7 +127,7 @@ public class CustomerRestControllerTest {
                 .when(customerService.delete("62edbc767ba3a05551fb10d6"))
                 .thenReturn(Mono.just(responseHandler));
 
-        webClient.delete().uri("/api/customer/{id}", "62edbc767ba3a05551fb10d6")
+        webClient.delete().uri("/api/yanki/customer/{id}", "62edbc767ba3a05551fb10d6")
                 .exchange()
                 .expectStatus().isOk();
     }
