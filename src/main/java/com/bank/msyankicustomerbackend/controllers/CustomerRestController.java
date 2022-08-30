@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/api/yanki/customer")
 public class CustomerRestController {
 
     @Autowired
