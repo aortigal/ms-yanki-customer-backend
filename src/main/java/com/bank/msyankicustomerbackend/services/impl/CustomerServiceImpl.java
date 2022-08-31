@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -62,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
                     dataEvent.setDateEvent(LocalDateTime.now());
 
                     Wallet wallet = new Wallet();
-                    wallet.setAmount(0.0F);
+                    wallet.setAmount(BigDecimal.ZERO);
                     wallet.setPhoneNumber(c.getPhoneNumber());
                     dataEvent.setData(wallet);
 
