@@ -102,4 +102,18 @@ public class CustomerServiceImpl implements CustomerService {
                 return Mono.just(new ResponseHandler("Not found", HttpStatus.NOT_FOUND, null));
         }).doFinally(fin -> log.info("[END] delete customer"));
     }
+
+    @Override
+    public Mono<ResponseHandler> findByPhoneNumber(String phoneNumber) {
+        log.info("[INI] findByPhoneNumber Customer");
+        return dao.findAll()
+                .filter(customer ->
+                        customer.getPhoneNumber().equals(phoneNumber)
+                )
+                .collectList()
+                .map(customers -> new ResponseHandler("Done", HttpStatus.OK, customers))
+                .onErrorResume(error -> Mono.just(new ResponseHandler(error.getMessage(), HttpStatus.BAD_REQUEST, null)))
+                .switchIfEmpty(Mono.just(new ResponseHandler("Empty", HttpStatus.NO_CONTENT, null)))
+                .doFinally(fin -> log.info("[END] findByPhoneNumber Customer"));
+    }
 }

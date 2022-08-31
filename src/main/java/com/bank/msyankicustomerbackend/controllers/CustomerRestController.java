@@ -40,4 +40,9 @@ public class CustomerRestController {
     public Mono<ResponseHandler> delete(@PathVariable("id") String id) {
         return customerService.delete(id);
     }
+
+    @GetMapping("/phone/{phoneNumber}")
+    public Mono<ResponseHandler> findByPhoneNumber(@PathVariable String phoneNumber) {
+        return customerService.findByPhoneNumber(phoneNumber);
+    }
 }

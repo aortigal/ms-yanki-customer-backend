@@ -14,4 +14,6 @@ public interface CustomerService {
     Mono<ResponseHandler> update(String id, Customer customer);
 
     Mono<ResponseHandler> delete(String id);
+
+    Mono<ResponseHandler> findByPhoneNumber(String phoneNumber);
 }
