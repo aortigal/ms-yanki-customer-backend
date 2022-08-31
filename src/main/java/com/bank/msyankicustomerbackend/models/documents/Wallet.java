@@ -2,6 +2,8 @@ package com.bank.msyankicustomerbackend.models.documents;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class Wallet{
 
@@ -9,6 +11,6 @@ public class Wallet{
 
     private String phoneNumber;
 
-    private float amount;
+    private BigDecimal amount;
 
 }
