@@ -1,8 +1,12 @@
 package com.bank.msyankicustomerbackend.services.impl;
 
+import com.bank.msyankicustomerbackend.constants.Constant;
 import com.bank.msyankicustomerbackend.handler.ResponseHandler;
 import com.bank.msyankicustomerbackend.models.dao.CustomerDao;
 import com.bank.msyankicustomerbackend.models.documents.Customer;
+import com.bank.msyankicustomerbackend.models.documents.Wallet;
+import com.bank.msyankicustomerbackend.models.utils.DataEvent;
+import com.bank.msyankicustomerbackend.producer.KafkaProducer;
 import com.bank.msyankicustomerbackend.services.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +16,16 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerDao dao;
+
+    @Autowired
+    private KafkaProducer kafkaProducer;
     private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     @Override
@@ -48,6 +56,17 @@ public class CustomerServiceImpl implements CustomerService {
         return dao.save(customer)
                 .doOnNext(c -> {
                     log.info(c.toString());
+                    DataEvent<Wallet> dataEvent = new DataEvent<>();
+                    dataEvent.setId(UUID.randomUUID().toString());
+                    dataEvent.setProcess(Constant.PROCESS_WALLET_CREATE);
+                    dataEvent.setDateEvent(LocalDateTime.now());
+
+                    Wallet wallet = new Wallet();
+                    wallet.setAmount(0.0F);
+                    wallet.setPhoneNumber(c.getPhoneNumber());
+                    dataEvent.setData(wallet);
+
+                    kafkaProducer.sendMessage(dataEvent);
                 })
                 .map(c -> new ResponseHandler("Done", HttpStatus.OK, c))
                 .onErrorResume(error -> Mono.just(new ResponseHandler(error.getMessage(), HttpStatus.BAD_REQUEST, null)))
